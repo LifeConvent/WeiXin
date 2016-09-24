@@ -1,0 +1,42 @@
+[ 2016-09-23T09:43:44+08:00 ] 127.0.0.1 /WeiXin/index.php/Login/login?account=&password=&phone=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000475s ]
+ERR: 无法加载模块:Login
+
+[ 2016-09-23T09:44:04+08:00 ] 127.0.0.1 /WeiXin/index.php/Login/login?account=qwer&password=qwe&check_remember=remember-me&phone=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000249s ]
+ERR: 无法加载模块:Login
+
+[ 2016-09-23T09:44:21+08:00 ] 127.0.0.1 /WeiXin/index.php/Login/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000006s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000196s ]
+ERR: 无法加载模块:Login
+
+[ 2016-09-23T09:44:27+08:00 ] 127.0.0.1 /WeiXin/index.php/Login/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000006s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000192s ]
+ERR: 无法加载模块:Login
+
+[ 2016-09-23T09:45:48+08:00 ] 127.0.0.1 /WeiXin/index.php/Login/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000005s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000178s ]
+ERR: 无法加载模块:Login
+
+[ 2016-09-23T09:46:16+08:00 ] 127.0.0.1 /WeiXin/index.php/Login/login?account=&password=&phone=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000243s ]
+ERR: 无法加载模块:Login
+
+[ 2016-09-23T15:45:10+08:00 ] ::1 /WeiXin/index.php/html/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000011s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000286s ]
+ERR: 无法加载模块:Html
+
