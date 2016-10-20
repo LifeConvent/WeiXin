@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>课程评价</title>
+    <script src="../../../../Public/js/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<table id="mytable" cellspacing="0" summary="The technical specifications of the Apple PowerMac G5 series">
+    <tr>
+        <th scope="col" abbr="Configurations" class="nobg">课程名</th>
+        <!--<th scope="col" abbr="Dual 1.8">姓名</th>-->
+        <!--<th scope="col" abbr="Dual 2">班级</th>-->
+        <!--<th scope="col" abbr="Dual 2.5">学年</th>-->
+        <!--<th scope="col" abbr="Dual 1.8">学期</th>-->
+        <!--<th scope="col" abbr="Dual 2">课程</th>-->
+        <!--<th scope="col" abbr="Dual 2.5">学分</th>-->
+        <!--<th scope="col" abbr="Dual 1.8">成绩</th>-->
+        <!--<th scope="col" abbr="Dual 2">绩点</th>-->
+    </tr>
+
+    <volist name="list" id="vo" mod="2" key="k">
+
+        <tr<eq name="mod" value="0"> class="alt"</eq>>
+            <th scope='row' abbr='Model' class='spec'<eq name="mod" value="0"> style="background: #F5FAFA;color: #797268;"</eq>>{$vo[course_name]}-{$vo[course_teacher]}</th>
+            <!--<td <eq name="mod" value="0"> class="alt"</eq>>{$vo[stu_name]}</td>-->
+            <!--<td <eq name="mod" value="0"> class="alt"</eq>>{$vo[stu_class]}</td>-->
+            <!--<td <eq name="mod" value="0"> class="alt"</eq>>{$vo[stu_year]}</td>-->
+            <!--<td <eq name="mod" value="0"> class="alt"</eq>>{$vo[stu_grade_year]}</td>-->
+            <!--<td <eq name="mod" value="0"> class="alt"</eq>>{$vo[stu_course_name]}</td>-->
+            <!--<td <eq name="mod" value="0"> class="alt"</eq>>{$vo[stu_fen]}</td>-->
+            <!--<td <eq name="mod" value="0"> class="alt"</eq>>{$vo[stu_grade]}</td>-->
+            <!--<td <eq name="mod" value="0"> class="alt"</eq>>{$vo[stu_dian]}</td>-->
+            <td class="alt">
+                <select id="example-e" name="rating">
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                </select>
+            </td>
+        </tr>
+    </volist>
+</table>
+</body>
+</html>

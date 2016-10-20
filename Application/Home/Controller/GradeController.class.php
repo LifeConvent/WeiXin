@@ -22,17 +22,17 @@ class GradeController extends Controller
         $jidian = 0;
         $xuefen = 0;
         for ($i = 1; $i <= count($list); $i++) {
-            $temp = $list[$i-1];
-            if($temp['stu_dian']!=0) {
+            $temp = $list[$i - 1];
+            if ($temp['stu_dian'] != 0) {
                 $jidian += (float)$temp['stu_fen'] * (float)$temp['stu_dian'];
 //            echo $jidian.'----';
                 $xuefen += (float)$temp['stu_fen'];
 //            echo $xuefen.'----';
             }
         }
-        $average = $jidian/$xuefen;
+        $average = $jidian / $xuefen;
         $average = sprintf('%.3f', (float)$average);
-        $this->assign('average','总平均绩点: '.$average);
+        $this->assign('average', '总平均绩点: ' . $average);
         $this->assign('list', $list);
         $this->display();
     }
@@ -51,4 +51,6 @@ class GradeController extends Controller
             return array("code" => "0", "data" => "获取信息失败！");
         }
     }
+
 }
+

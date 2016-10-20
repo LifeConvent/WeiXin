@@ -8,13 +8,15 @@
 
 $appid = "wx2c307a1875247a02";
 $appsecret = "25cd61683a5b7282524f976cee2b0da9";
-$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$appsecret";
+
+$appidTest = 'wx9753e9fbf21cbc59';
+$appsecretTest = 'dcb93846b0a57b0c88ba1837613ed04c';
+$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appidTest&secret=$appsecretTest";
 
 $output = https_request($url);
 $jsoninfo = json_decode($output, true);
 
 $access_token = $jsoninfo["access_token"];
-
 
 $jsonmenu = '{
       "button":[
@@ -24,22 +26,22 @@ $jsonmenu = '{
             {
                "type":"click",
                "name":"北京天气",
-               "key":"天气北京"
+               "key":"menu_weather_beijing"
             },
             {
                "type":"click",
                "name":"上海天气",
-               "key":"天气上海"
+               "key":"menu_weather_shanghai"
             },
             {
                "type":"click",
                "name":"广州天气",
-               "key":"天气广州"
+               "key":"menu_weather_guangzhou"
             },
             {
                "type":"click",
                "name":"深圳天气",
-               "key":"天气深圳"
+               "key":"menu_weather_shenzhen"
             },
             {
                 "type":"view",
@@ -50,22 +52,22 @@ $jsonmenu = '{
 
        },
        {
-           "name":"方倍工作室",
+           "name":"附加功能",
            "sub_button":[
             {
                "type":"click",
                "name":"公司简介",
-               "key":"company"
+               "key":"menu_company_detail"
             },
             {
                "type":"click",
                "name":"趣味游戏",
-               "key":"游戏"
+               "key":"menu_game_fun"
             },
             {
                 "type":"click",
                 "name":"讲个笑话",
-                "key":"笑话"
+                "key":"menu_joke"
             }]
 
 
