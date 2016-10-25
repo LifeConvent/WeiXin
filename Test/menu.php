@@ -55,6 +55,11 @@ $jsonmenu = '{
            "name":"附加功能",
            "sub_button":[
             {
+               "type":"view",
+               "name":"模版样例",
+               "url":"http://203.195.235.76/jssdk/"
+            },
+            {
                "type":"click",
                "name":"公司简介",
                "key":"menu_company_detail"
