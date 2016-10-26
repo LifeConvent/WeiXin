@@ -18,69 +18,10 @@ class MenuController extends Controller
     public $appsecret = "25cd61683a5b7282524f976cee2b0da9";
     public $appidTest = 'wx9753e9fbf21cbc59';
     public $appsecretTest = 'dcb93846b0a57b0c88ba1837613ed04c';
-    public $jsonmenu = '{
-          "button":[
-          {
-                "name":"天气预报",
-               "sub_button":[
-                {
-                   "type":"click",
-                   "name":"北京天气",
-                   "key":"menu_weather_beijing"
-                },
-                {
-                   "type":"click",
-                   "name":"上海天气",
-                   "key":"menu_weather_shanghai"
-                },
-                {
-                   "type":"click",
-                   "name":"广州天气",
-                   "key":"menu_weather_guangzhou"
-                },
-                {
-                   "type":"click",
-                   "name":"深圳天气",
-                   "key":"menu_weather_shenzhen"
-                },
-                {
-                    "type":"view",
-                    "name":"本地天气",
-                    "url":"http://m.hao123.com/a/tianqi"
-                }]
-
-
-           },
-           {
-               "name":"附加功能",
-               "sub_button":[
-                {
-                   "type":"view",
-                   "name":"模版样例",
-                   "url":"http://203.195.235.76/jssdk/"
-                },
-                {
-                   "type":"click",
-                   "name":"公司简介",
-                   "key":"menu_company_detail"
-                },
-                {
-                   "type":"click",
-                   "name":"趣味游戏",
-                   "key":"menu_game_fun"
-                },
-                {
-                    "type":"click",
-                    "name":"讲个笑话",
-                    "key":"menu_joke"
-                }]
-
-
-           }]
-        }';
     public $url = '';
 
-    public function getAccessToken(){
+    public function getAccessToken()
+    {
         $upMenu = new MenuController();
         $upMenu->url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$upMenu->appidTest&secret=$upMenu->appsecretTest";
         $output = $this->https_request($upMenu->url);
@@ -88,32 +29,40 @@ class MenuController extends Controller
         return $jsoninfo["access_token"];
     }
 
-    public function upMenuList()
+    /**
+     * @function 更新微信菜单
+     * @return bool true为成功上传
+     */
+    public function upMenuList($menu = null)
     {
         $access_token = $this->getAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" . $access_token;
-        $result = $this->https_request($url, $this->jsonmenu);
+        if (empty($menu)) {
+            $dataClass = new DataController();
+            $result = $this->https_request($url, $dataClass->jsonmenu);
+        } else
+            $result = $this->https_request($url, $menu);
         //对返回结果的处理
 
+        $data = new \stdClass();
+        $data = json_decode($result);
 
-
-
-
-
-
-
-
-        var_dump($result);
+        if ($data->errmsg == 'ok') {
+            return true;
+        } else {
+            return false;
+        }
+//        var_dump($result);
     }
 
     public function https_request($url, $data = null)
     {
         $curl = curl_init();
-        if (class_exists ( '/CURLFile' )) {//php5.5跟php5.6中的CURLOPT_SAFE_UPLOAD的默认值不同
-            curl_setopt ( $curl, CURLOPT_SAFE_UPLOAD, true );
+        if (class_exists('/CURLFile')) {//php5.5跟php5.6中的CURLOPT_SAFE_UPLOAD的默认值不同
+            curl_setopt($curl, CURLOPT_SAFE_UPLOAD, true);
         } else {
-            if (defined ( 'CURLOPT_SAFE_UPLOAD' )) {
-                curl_setopt ( $curl, CURLOPT_SAFE_UPLOAD, false );
+            if (defined('CURLOPT_SAFE_UPLOAD')) {
+                curl_setopt($curl, CURLOPT_SAFE_UPLOAD, false);
             }
         }
         curl_setopt($curl, CURLOPT_URL, $url);
