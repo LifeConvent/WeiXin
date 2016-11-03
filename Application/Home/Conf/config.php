@@ -10,4 +10,5 @@ return array(
 	'DB_PREFIX'=>'',
 	'DB_CHARSET'=>'utf8',
 	'DB_DEBUG'=> TRUE,
+		'URL_HTML_SUFFIX'=>''
 );

@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="description" content="">
+    <include file="Common:head" />
+    <title></title>
+    <link href="__PUBLIC__/css/jquery.autocomplete.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__PUBLIC__/js/jquery.autocomplete.js"></script>
+    <script src="__PUBLIC__/js/jquery-2.0.2.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/js/jquery.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/js/md5.js" type="text/javascript"></script>
+    <script>
+//        $(function(){
+//            //背景图片适应浏览器的宽与高
+//            $("#hospitalname").autocomplete("<{:U('Home/Meeting/getHospitalData')}>",{
+//                minChars: 1,
+//                max: 10,
+//                width:150,
+//                autoFill: false,
+//                mustMatch: false,
+//                matchContains: true,
+//                cacheLength :200,
+//                matchSubset:true,
+//                matchCase:true,
+//                scrollHeight: 220,
+//                extraParams:{
+//                    keyword:function(){
+//                        return $('#hospitalname').val();
+//                    }
+//                },
+//                parse : function(data) {
+//                    return $.map(eval(data), function(row) {
+//                        return {
+//                            data : row,
+//                            value : row.name,
+//                            result : row.name
+//                        }
+//                    });
+//                },
+//                formatItem: function(data, i, total) {
+//                    return "<I>"+data.name+"</I>";
+//                },
+//                formatMatch: function(data, i, total) {
+//                    return data.name;
+//                }
+//                ,
+//                formatResult: function(data) {
+//                    return data.name;
+//                }
+//            }).result(function(event,item){
+//                $("#hospitalid").val(item.code);
+//            });
+//        })
+
+        function checkForm(){
+            if(!($('#rules-check').prop('checked'))) {
+                alert('您还没有同意注册须知！');
+                return false;
+            }
+
+            if(!!!$("#name").val()){
+                $("#name_msg").text('请填写姓名');
+                $("#name_msg").show();
+                $("#name").focus();
+                return false;
+            }else{
+                $("#name_msg").hide();
+            }
+
+            if(!!!$("#hospitalname").val()){
+                $("#hospital_msg").text('请填写医院');
+                $("#hospital_msg").show();
+                $("#hospitalname").focus();
+                return false;
+            }else{
+                $("#hospital_msg").hide();
+            }
+
+            if(!!!$("#phonenum").val()){
+                $("#phone_msg").text('请填写手机号码');
+                $("#phone_msg").show();
+                $("#phonenum").focus();
+                return false;
+            }else{
+                $("#phone_msg").hide();
+            }
+
+            //验证手机号码格式
+            if ($("#phonenum").val().length != 11) {
+                $("#phone_msg").text('请填写11位手机号码');
+                $("#phone_msg").show();
+                $("#phonenum").focus();
+                return false;
+            }else{
+                $("#phone_msg").hide();
+            }
+
+            var myreg = /^(((1[3,4,5,7,8][0-9]{1}))+\d{8})$/;
+            if (!myreg.test($("#phonenum").val())) {
+                $("#phone_msg").text('手机号码无效');
+                $("#phone_msg").show();
+                $("#phonenum").focus();
+                return false;
+            }else{
+                $("#phone_msg").hide();
+            }
+
+            /*
+             if(!!!$("#codenum").val()){
+             $("#code_msg").text('请填写验证码');
+             $("#code_msg").show();
+             $("#codenum").focus();
+             return false;
+             } else{
+             $("#code_msg").hide();
+             }
+
+             if(!(hex_md5($('#codenum').val())==$('#codenum1').val()) ){
+             $("#code_msg").text('验证码错误');
+             $("#code_msg").show();
+             $("#codenum").focus();
+             return false;
+             }else{
+             $("#code_msg").hide();
+             }
+
+             if(!(hex_md5($('#phonenum').val())==$('#phonenum1').val()) ){
+             $("#phone_msg").text('手机号码与验证码不匹配');
+             $("#phone_msg").show();
+             $("#phonenum").focus();
+             return false;
+             }else{
+             $("#phone_msg").hide();
+             }
+             */
+
+            $("#subButton").attr("disabled","true");
+            return true;
+        }
+
+    </script>
+    <style>
+        body{padding:1%;}
+    </style>
+</head>
+<body>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="panel-title">首次使用请先补全您的信息</h4>
+    </div>
+    <div class="panel-body">
+
+        <form class="form-horizontal" role="form" id="form" action="<{:U('Home/Meeting/addOpenInfo')}>" method="post" onSubmit="return checkForm();">
+            <input type='hidden' name='openid' value='<{$openid}>'/>
+            <input type='hidden' name='type' value='<{$type}>'/>
+            <input type='hidden' name='meeting_id' value='<{$meeting_id}>'/>
+            <input type="hidden" name="id" value='<{$id}>' />
+            <input type="hidden" name="thirdPartyUrl" value="<{$thirdPartyUrl}>">
+            <input type="hidden" name="source" value="<{$source}>">
+            <input type="hidden" name="needOpenID" value="<{$needOpenID}>">
+            <div class="form-group">
+                <label for="firstname" class="col-sm-2 control-label">姓名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name" name="name"
+                           placeholder="请输入姓名">
+                    <span id="name_msg" style='display:none' class="label label-warning">姓名必填</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastname" class="col-sm-2 control-label">医院</label>
+                <div class="col-sm-10">
+                    <input type="hidden" id="hospitalid" name="hospitalid" >
+                    <input type="text" class="form-control" id="hospitalname" name="hospitalname" placeholder="请输入医院">
+                    <span id="hospital_msg" style='display:none' class="label label-warning">医院必填</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastname" class="col-sm-2 control-label">科室</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="DoctorOffice">
+                        <volist name="officeList" id="officedata">
+                            <option value="<{$officedata.DepartName}>"><{$officedata.DepartName}></option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastname" class="col-sm-2 control-label">职称</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="TechnicalTitle">
+                        <volist name="techList" id="techdata">
+                            <option value="<{$techdata.DoctorTitle}>"><{$techdata.DoctorTitle}></option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone" class="col-sm-2 control-label">手机号码</label>
+
+                <div class="col-sm-10">
+                    <input type="hidden" id="phoneid" name="phoneid">
+                    <input type="text" class="form-control" id="phonenum" name="phonenum" placeholder="请输入手机号码">
+                    <input type="hidden" id="phonenum1" name="phonenum1">
+                    <span id="phone_msg" style='display:none' class="label label-warning">请填写手机号码</span>
+                </div>
+            </div>
+            <div class="form-group" style="display: none">
+                <label for="code" class="col-sm-2 control-label">验证码</label>
+
+                <div class="col-sm-10">
+                    <input type="hidden" id="codeid" name="codeid">
+                    <input type="text" class="form-control" id="codenum" name="codenum" placeholder="请输入验证码">
+                    <button type="button" class="btn btn-primary btn-lg btn-block"id="code" name="sendcode" style="height:30px;margin-top:5px;vertical-align:middle;line-height:10px;" onclick="sendMessage();">
+                        发送验证码
+                    </button>
+                    <input type="hidden" id="codenum1" name="codenum1">
+                    <span id="code_msg" style='display:none' class="label label-warning">请填写验证码</span>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-left:20px;">
+                <input type="checkbox" value="1" id="rules-check" checked="checked"/> <label for="rules-check">我已阅读且同意注册须知</label> <a href="/index.php?m=home&c=meeting&a=rules" id="rules-link">[查看详细]</a>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="subButton" type="submit" class="btn btn-primary btn-lg btn-block">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    var InterValObj; //timer变量，控制时间
+    var count = 30; //间隔函数，1秒执行
+    var curCount;//当前剩余秒数
+
+    function validatemobile(mobile) {
+        if(mobile.length == 0){
+            $("#phone_msg").text('请填写手机号码');
+            $("#phone_msg").show();
+            $("#phonenum").focus();
+            return false;
+        }else{
+            $("#phone_msg").hide();
+        }
+        if (mobile.length != 11) {
+            $("#phone_msg").text('请填写11位手机号码');
+            $("#phone_msg").show();
+            $("#phonenum").focus();
+            return false;
+        }else{
+            $("#phone_msg").hide();
+        }
+        var myreg = /^(((1[3,4,5,7,8][0-9]{1}))+\d{8})$/;
+        if (!myreg.test(mobile)) {
+            $("#phone_msg").text('手机号码无效');
+            $("#phone_msg").show();
+            $("#phonenum").focus();
+            return false;
+        }else{
+            $("#phone_msg").hide();
+        }
+        return true;
+    }
+
+    function sendMessage() {
+        var mobile = document.getElementById("phonenum").value;
+        var result = validatemobile(mobile);//调用上边的方法验证手机号码码的正确性
+        if (result != false) {
+            $("#phone_msg").hide();
+            curCount = count;
+            //设置button效果，开始计时
+            $("#code").attr("disabled", "true");
+            $("#code").text(curCount + "秒后重新发送");
+            InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+            //向后台发送处理数据
+//            $.ajax({
+//                type: "POST", //用POST方式传输
+//                url: "<{:U('Home/Meeting/sendValidationCode')}>", //目标地址.
+//                dataType: "json", //数据格式:JSON
+//                data: "&mobile=" + mobile,
+//                success: function (json) {
+//                    if (json.status == 'success') {//成功的处理
+//                        $("#phonenum1").val(json.mobile);
+//                        $("#codenum1").val(json.code);;
+//                        alert(json.html);
+//                    }
+//                    else {
+//                        alert(json.html);
+//                    }
+//                }
+//            });
+        }
+    }
+
+    //timer处理函数
+    function SetRemainTime() {
+        if (curCount == 0) {
+            window.clearInterval(InterValObj);//停止计时器
+            $sendCode = $("#code");
+            $sendCode.removeAttr("disabled");//启用按钮
+            $sendCode.text("重发验证码");
+        }
+        else {
+            curCount--;
+            $("#code").text(curCount + "秒后重新发送");
+        }
+    }
+</script>
+</body>
+</html>

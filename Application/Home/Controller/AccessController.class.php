@@ -39,7 +39,7 @@ class wechatCallbackapiTest
             libxml_disable_entity_loader(true);
             //解析XML数据包
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-            echo catchEvent($postObj);
+            catchEvent($postObj);
         }
     }
 
@@ -78,60 +78,109 @@ function catchEvent($object)
 {
     //对象为空时要向微信返回空字符串
     if (empty($object))
-        return '';
-    switch ($object->MsgType) {
-        case 'text': {
-            $keyword = trim($object->Content);
-            $data = getUserInfo($keyword);
-            if ($data['code'] == 1) {
-                $newsArray = array();
-                $newsArray[] = array("Title" => $keyword . "的成绩查询结果", "Description" => "成绩查询结果", "PicUrl" => 'http://' . $_SERVER['HTTP_HOST'] . "/WeiXin/Public/image/sample.jpg", "Url" => $_SERVER['HTTP_HOST'] . "/WeiXin/index.php/Home/Grade/deal?stu_num=" . $keyword);
-                echo transmitNews($object, $newsArray);
-                exit();
-            } else if (strstr($keyword, '课程评价+')) {
-                $stu_num = substr($keyword, 13, 8);
-                $data = getCourseInfo($stu_num);
+        echo '';
+
+    $OpenID = $object->FromUserName;
+    $userMana = new UserManagerController();
+    $result = $userMana->searchUserByOpenID($OpenID);
+
+    if (!$result) {
+        $newsArray = array();
+        $newsArray[] = array("Title" => "请绑定您的微信", "Description" => "您还未未绑定微信账号，绑定后使用更多功能", "PicUrl" => 'http://' . $_SERVER['HTTP_HOST'] . "/WeiXin/Public/image/sample.jpg", "Url" => $_SERVER['HTTP_HOST'] . "/WeiXin/index.php/Home/UserManager/bindOpenId?id=" . $OpenID);
+        echo transmitNews($object, $newsArray);
+        exit();
+    } else {
+
+        switch ($object->MsgType) {
+            case 'text': {
+                $keyword = trim($object->Content);
+                $data = getUserInfo($keyword);
                 if ($data['code'] == 1) {
                     $newsArray = array();
-                    $newsArray[] = array("Title" => "课程评价", "Description" => "课程评价", "PicUrl" => 'http://' . $_SERVER['HTTP_HOST'] . "/WeiXin/Public/image/sample.jpg", "Url" => $_SERVER['HTTP_HOST'] . "/WeiXin/index.php/Home/CourseEvaluation/getCourse?stu_num=" . $stu_num);
+                    $newsArray[] = array("Title" => $keyword . "的成绩查询结果", "Description" => "成绩查询结果", "PicUrl" => 'http://' . $_SERVER['HTTP_HOST'] . "/WeiXin/Public/image/sample.jpg", "Url" => $_SERVER['HTTP_HOST'] . "/WeiXin/index.php/Home/Grade/deal?stu_num=" . $keyword);
                     echo transmitNews($object, $newsArray);
                     exit();
+                } else if (strstr($keyword, '课程评价+')) {
+                    $stu_num = substr($keyword, 13, 8);
+                    $data = getCourseInfo($stu_num);
+                    if ($data['code'] == 1) {
+                        $newsArray = array();
+                        $newsArray[] = array("Title" => "课程评价", "Description" => "课程评价", "PicUrl" => 'http://' . $_SERVER['HTTP_HOST'] . "/WeiXin/Public/image/sample.jpg", "Url" => $_SERVER['HTTP_HOST'] . "/WeiXin/index.php/Home/CourseEvaluation/getCourse?stu_num=" . $stu_num);
+                        echo transmitNews($object, $newsArray);
+                        exit();
+                    } else {
+                        $contentStr = '请输入正确学好进行查询!';
+                        echo transmitText($object, $contentStr);
+                        exit();
+                    }
                 } else {
-                    $contentStr = '请输入正确学好进行查询!';
+                    $contentStr = '1.输入"学号"查询成绩                2.输入"课程评价+学号"进行课程评价';
                     echo transmitText($object, $contentStr);
                     exit();
                 }
-            } else {
-                $contentStr = '1.输入"学号"查询成绩                2.输入"课程评价+学号"进行课程评价';
-                echo transmitText($object, $contentStr);
-                exit();
+                break;
             }
-            break;
-        }
-        case 'event': {
-            switch ($object->Event) {
-                case 'subscribe': {
-                    echo transmitText($object, "欢迎订阅\n微信公众平台");
-                    exit();
-                    break;
-                }
-                case 'CLICK': {
-                    $key = $object->EventKey;
-                    if (checkMenuKey($key)) {
-                        //处理菜单点击事件
-                        $contentStr = switchMenuKey($key);
-                        echo transmitText($object, actionByMenuKey($contentStr));
+            case 'event': {
+                switch ($object->Event) {
+                    case 'subscribe': {
+                        $OpenID = $object->FromUserName;
+                        $result = $userMana->searchUserByOpenID($object->FromUserName);
+                        if (!$result) {
+                            $newsArray = array();
+                            $newsArray[] = array("Title" => "请绑定您的微信", "Description" => "您还未未绑定微信账号，绑定后使用更多功能", "PicUrl" => 'http://' . $_SERVER['HTTP_HOST'] . "/WeiXin/Public/image/sample.jpg", "Url" => $_SERVER['HTTP_HOST'] . "/WeiXin/index.php/Home/UserManager/bindOpenId?id=" . $OpenID);
+                            echo transmitNews($object, $newsArray);
+                        } else {
+                            echo transmitText($object, "已绑定");
+                        }
                         exit();
+                        break;
+                    }
+                    case 'CLICK': {
+                        $key = $object->EventKey;
+                        if (checkMenuKey($key)) {
+                            //处理菜单点击事件
+                            $contentStr = switchMenuKey($key);
+                            if ($contentStr == 'joke') {
+                                $newsArray = array();
+                                $newsArray[] = array("Title" => "发送消息测试", "Description" => "通过Initial测试信息发送", "PicUrl" => 'http://' . $_SERVER['HTTP_HOST'] . "/WeiXin/Public/image/sample.jpg", "Url" => $_SERVER['HTTP_HOST'] . "/WeiXin/index.php/Home/GroupSend/sendTest?id=" . $OpenID);
+                                echo transmitNews($object, $newsArray);
+                                exit();
+                            }
+                            echo transmitText($object, actionByMenuKey($contentStr));
+                            exit();
+                        }
                     }
                 }
+                break;
             }
-            break;
+            default:
+                echo '';
+                break;
         }
-        default:
-            echo '';
-            break;
+
     }
 }
+
+
+/**
+ * @param $OpenID
+ * @return bool
+ */
+function searchUserByOpenID($OpenID=null)
+{
+    if($OpenID==null){
+        return false;
+    }
+    $user = M('ipsen_user', '', 'mysql://root:123456@localhost:3306/test');//实例化user_info表模型对象
+    $temp['openid'] = $OpenID;
+    $user_info = $user->where($temp)->select();//对象查询
+    if (empty($user_info[0])) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 
 /**
  * @function 回复图文消息
@@ -216,7 +265,8 @@ function checkMenuKey($key)
  * @param $key
  * @return string
  */
-function actionByMenuKey($key){
+function actionByMenuKey($key)
+{
     $contentStr = '';
     switch (substr($key, 0, 7)) {
         case 'weather':
@@ -296,5 +346,6 @@ class AccessController extends Controller
             $wechatObj->responseMsg(); //如果没有echostr，则返回消息
         }
     }
+
 }
 

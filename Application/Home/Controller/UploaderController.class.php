@@ -82,6 +82,9 @@ class UploaderController extends Controller
         return $filedata;
     }
 
+    /**
+     * @function 上传图文消息
+     */
     public function upLoaderNews(){
         $upMenu = new MenuController();
         $access_token = $upMenu->getAccessToken();
@@ -94,5 +97,6 @@ class UploaderController extends Controller
         // type media_id created_at
         dump($result);
         $data = json_decode($result);
+        $data->media_id;
     }
 }

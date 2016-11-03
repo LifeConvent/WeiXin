@@ -47,12 +47,13 @@ class MenuController extends Controller
         $data = new \stdClass();
         $data = json_decode($result);
 
+        var_dump($result);
+
         if ($data->errmsg == 'ok') {
             return true;
         } else {
             return false;
         }
-//        var_dump($result);
     }
 
     public function https_request($url, $data = null)

@@ -90,7 +90,7 @@ class DataController extends Controller
                 },
                 {
                     "type":"click",
-                    "name":"讲个笑话",
+                    "name":"发送消息",
                     "key":"menu_joke"
                 }]
 
@@ -100,11 +100,43 @@ class DataController extends Controller
     public $news_allSend = '{
                                "filter":{
                                   "is_to_all":false,
-                                  "tag_id":2
+                                  "tag_id":100
                                },
                                "mpnews":{
-                                  "media_id":"6SoUveSujgaaUNOHESlditHCak9nJtRed1JLAb8nH8WOEnHgTjxREtCw-nnGO0nd"
+                                  "media_id":"OyFT9nh3nYs5ls9x9uxaffe8Cwr2crUSs0aKvvKLy67fGgSQF8z_O3T3xaQed05u"
                                },
                                "msgtype":"mpnews"
+                            }';
+
+    public $text_allSend = '{
+                               "filter":{
+                                  "is_to_all":false,
+                                  "tag_id":100
+                               },
+                               "text":{
+                                  "content":"这是群发消息的测试"
+                               },
+                               "msgtype":"text"
+                            }';
+    //"id":100
+    public $tag = '{
+                    "tag" : {
+                        "name" : "test"//标签名
+                    }
+                   }';
+    public $user_tags = '{
+                          "openid_list" : [//粉丝列表
+                            "ocoIvxLTumwc3gpi6SPvKWrzYlt0",
+                          ],
+                          "tagid" : 100
+                        }';
+
+    public $sendByOpenID = '{
+                               "touser":[
+                                "ocoIvxLTumwc3gpi6SPvKWrzYlt0",
+                                "ocoIvxLTumwc3gpi6SPvKWrzYlt0"
+                               ],
+                                "msgtype": "text",
+                                "text": { "content": "请您获知."}
                             }';
 }
